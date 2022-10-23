@@ -7,6 +7,8 @@ canvas.height = 700;
 document.body.appendChild(canvas);
 
 let backgroundImage, shiptImage, bulletImage, gameOverImage;
+let shiptImageX = canvas.width / 2 - 29;
+let shiptImageY = canvas.height - 58;
 
 function loadImage() {
     backgroundImage = new Image();
@@ -27,6 +29,7 @@ function loadImage() {
 
 function render() {
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(shiptImage, shiptImageX, shiptImageY);
 }
 
 function main() {
