@@ -21,7 +21,7 @@ function Bullet() {
 
         bulletList.push(this);
     };
-    this.update = () => {
+    this.shoot = () => {
         this.y -= 7;
     };
 }
@@ -42,31 +42,26 @@ function loadImage() {
     gameOverImage.src = "images/gameover.png";
 }
 
-let keypress = {};
+let keyValue = {};
 function keyboardListener() {
     document.addEventListener("keydown", (e) => {
-        keypress[e.key] = true;
+        keyValue[e.key] = true;
     });
 
     document.addEventListener("keyup", (e) => {
-        delete keypress[e.key];
+        delete keyValue[e.key];
+        if (e.key === " ") {
+            let bullet = new Bullet();
+            bullet.init();
+        }
     });
 }
 
-function createBullet(e) {
-    if (!(e.keyCode === 32)) {
-        return;
-    }
-
-    let bullet = new Bullet();
-    bullet.init();
-}
-
 function moveShip() {
-    if ("ArrowRight" in keypress) {
+    if ("ArrowRight" in keyValue) {
         shipX += 5;
     }
-    if ("ArrowLeft" in keypress) {
+    if ("ArrowLeft" in keyValue) {
         shipX -= 5;
     }
     if (shipX <= 0) {
@@ -74,6 +69,12 @@ function moveShip() {
     }
     if (shipX >= canvas.width - shiptSize) {
         shipX = canvas.width - shiptSize;
+    }
+}
+
+function shootBullet() {
+    for (let i = 0; i < bulletList.length; i++) {
+        bulletList[i].shoot();
     }
 }
 
@@ -87,8 +88,8 @@ function render() {
 
 function main() {
     moveShip(); // 좌표 업데이트 후
+    shootBullet();
     render(); // 랜더
-    document.addEventListener("keyup", createBullet);
     requestAnimationFrame(main);
 }
 
