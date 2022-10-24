@@ -11,6 +11,20 @@ let backgroundImage, shipImage, bulletImage, gameOverImage;
 let shipX = canvas.width / 2 - 29;
 let shipY = canvas.height - shiptSize;
 
+let bulletList = [];
+function Bullet() {
+    this.x = 0;
+    this.y = 0;
+    this.init = () => {
+        this.x = shipX + 20;
+        this.y = shipY;
+
+        bulletList.push(this);
+    };
+    this.update = () => {
+        this.y -= 7;
+    };
+}
 function loadImage() {
     backgroundImage = new Image();
     backgroundImage.src = "images/background.png";
@@ -19,16 +33,25 @@ function loadImage() {
     shipImage.src = "images/spaceship.png";
 
     bulletImage = new Image();
-    bulletImage.scr = "images/bullet.png";
+    bulletImage.src = "images/bullet.png";
 
     enemyImage = new Image();
-    enemyImage.scr = "images/enemy.png";
+    enemyImage.src = "images/enemy.png";
 
     gameOverImage = new Image();
-    gameOverImage.sre = "images/gameover.png";
+    gameOverImage.src = "images/gameover.png";
 }
 
-function setupKeyboardListener(e) {
+function createBullet(e) {
+    if (!(e.keyCode === 32)) {
+        return;
+    }
+
+    let bullet = new Bullet();
+    bullet.init();
+}
+
+function moveShip(e) {
     if (e.keyCode === 39) {
         shipX += 10;
     }
@@ -46,11 +69,15 @@ function setupKeyboardListener(e) {
 function render() {
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(shipImage, shipX, shipY);
+    for (let i = 0; i < bulletList.length; i++) {
+        ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
+    }
 }
 
 function main() {
     render();
-    document.addEventListener("keydown", setupKeyboardListener);
+    document.addEventListener("keydown", moveShip);
+    document.addEventListener("keyup", createBullet);
     requestAnimationFrame(main);
 }
 
