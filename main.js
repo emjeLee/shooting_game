@@ -42,6 +42,17 @@ function loadImage() {
     gameOverImage.src = "images/gameover.png";
 }
 
+let keypress = {};
+function keyboardListener() {
+    document.addEventListener("keydown", (e) => {
+        keypress[e.key] = true;
+    });
+
+    document.addEventListener("keyup", (e) => {
+        delete keypress[e.key];
+    });
+}
+
 function createBullet(e) {
     if (!(e.keyCode === 32)) {
         return;
@@ -51,12 +62,12 @@ function createBullet(e) {
     bullet.init();
 }
 
-function moveShip(e) {
-    if (e.keyCode === 39) {
-        shipX += 10;
+function moveShip() {
+    if ("ArrowRight" in keypress) {
+        shipX += 5;
     }
-    if (e.keyCode === 37) {
-        shipX -= 10;
+    if ("ArrowLeft" in keypress) {
+        shipX -= 5;
     }
     if (shipX <= 0) {
         shipX = 0;
@@ -75,11 +86,12 @@ function render() {
 }
 
 function main() {
-    render();
-    document.addEventListener("keydown", moveShip);
+    moveShip(); // 좌표 업데이트 후
+    render(); // 랜더
     document.addEventListener("keyup", createBullet);
     requestAnimationFrame(main);
 }
 
 loadImage();
+keyboardListener();
 main();
