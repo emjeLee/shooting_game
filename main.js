@@ -7,16 +7,16 @@ canvas.height = 700;
 
 document.body.appendChild(canvas);
 
-let backgroundImage, shiptImage, bulletImage, gameOverImage;
-let shiptImageX = canvas.width / 2 - 29;
-let shiptImageY = canvas.height - shiptSize;
+let backgroundImage, shipImage, bulletImage, gameOverImage;
+let shipX = canvas.width / 2 - 29;
+let shipY = canvas.height - shiptSize;
 
 function loadImage() {
     backgroundImage = new Image();
     backgroundImage.src = "images/background.png";
 
-    shiptImage = new Image();
-    shiptImage.src = "images/spaceship.png";
+    shipImage = new Image();
+    shipImage.src = "images/spaceship.png";
 
     bulletImage = new Image();
     bulletImage.scr = "images/bullet.png";
@@ -30,22 +30,22 @@ function loadImage() {
 
 function setupKeyboardListener(e) {
     if (e.keyCode === 39) {
-        shiptImageX += 10;
+        shipX += 10;
     }
     if (e.keyCode === 37) {
-        shiptImageX -= 10;
+        shipX -= 10;
     }
-    if (shiptImageX <= 0) {
-        shiptImageX = 0;
+    if (shipX <= 0) {
+        shipX = 0;
     }
-    if (shiptImageX >= canvas.width - shiptSize) {
-        shiptImageX = canvas.width - shiptSize;
+    if (shipX >= canvas.width - shiptSize) {
+        shipX = canvas.width - shiptSize;
     }
 }
 
 function render() {
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    ctx.drawImage(shiptImage, shiptImageX, shiptImageY);
+    ctx.drawImage(shipImage, shipX, shipY);
 }
 
 function main() {
