@@ -10,6 +10,7 @@ document.body.appendChild(canvas);
 
 let backgroundImage, shipImage, bulletImage, gameOverImage;
 let gameOver = false;
+let score = 0;
 
 let shipX = canvas.width / 2 - 29;
 let shipY = canvas.height - shiptSize;
@@ -37,6 +38,7 @@ function Bullet() {
                 this.x >= enemyList[i].x &&
                 this.x <= enemyList[i].x + 20
             ) {
+                score++;
                 this.alive = false;
                 enemyList.splice(i, 1);
             }
@@ -140,6 +142,9 @@ function enemyFalling() {
 function render() {
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(shipImage, shipX, shipY);
+    ctx.fillText(`SCORE : ${score}`, 10, 20);
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
 
     for (let i = 0; i < bulletList.length; i++) {
         if (bulletList[i].alive) {
