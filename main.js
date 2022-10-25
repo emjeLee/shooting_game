@@ -9,6 +9,8 @@ canvas.height = 700;
 document.body.appendChild(canvas);
 
 let backgroundImage, shipImage, bulletImage, gameOverImage;
+let gameOver = false;
+
 let shipX = canvas.width / 2 - 29;
 let shipY = canvas.height - shiptSize;
 
@@ -43,6 +45,10 @@ function Enemy() {
     };
 
     this.updateY = () => {
+        if (this.y >= canvas.height - enemySize) {
+            gameOver = true;
+        }
+
         this.y += 2;
     };
 }
@@ -127,6 +133,9 @@ function render() {
 }
 
 function main() {
+    if (gameOver) {
+        return ctx.drawImage(gameOverImage, -100, 50);
+    }
     moveShip(); // 좌표 업데이트 후
     shootBullet();
     enemyFalling();
