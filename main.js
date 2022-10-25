@@ -2,6 +2,7 @@ const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
 
 const shiptSize = 58;
+const enemySize = 64;
 canvas.width = 400;
 canvas.height = 700;
 
@@ -25,6 +26,27 @@ function Bullet() {
         this.y -= 7;
     };
 }
+
+function genRandomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+let enemyList = [];
+function Enemy() {
+    this.x = 0;
+    this.y = 0;
+    this.init = () => {
+        this.x = genRandomNumber(0, canvas.width - enemySize);
+        this.y = 0;
+
+        enemyList.push(this);
+    };
+
+    this.updateY = () => {
+        this.y += 2;
+    };
+}
+
 function loadImage() {
     backgroundImage = new Image();
     backgroundImage.src = "images/background.png";
@@ -57,6 +79,13 @@ function keyboardListener() {
     });
 }
 
+function createEnemy() {
+    setInterval(() => {
+        let enemy = new Enemy();
+        enemy.init();
+    }, 1500);
+}
+
 function moveShip() {
     if ("ArrowRight" in keyValue) {
         shipX += 5;
@@ -78,21 +107,34 @@ function shootBullet() {
     }
 }
 
+function enemyFalling() {
+    for (let i = 0; i < enemyList.length; i++) {
+        enemyList[i].updateY();
+    }
+}
+
 function render() {
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(shipImage, shipX, shipY);
+
     for (let i = 0; i < bulletList.length; i++) {
         ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
+    }
+
+    for (let i = 0; i < enemyList.length; i++) {
+        ctx.drawImage(enemyImage, enemyList[i].x, enemyList[i].y);
     }
 }
 
 function main() {
     moveShip(); // 좌표 업데이트 후
     shootBullet();
+    enemyFalling();
     render(); // 랜더
     requestAnimationFrame(main);
 }
 
 loadImage();
 keyboardListener();
+createEnemy();
 main();
