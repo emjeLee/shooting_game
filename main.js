@@ -28,6 +28,9 @@ function Bullet() {
     };
 
     this.shoot = () => {
+        if (this.y <= 0) {
+            this.alive = false;
+        }
         this.y -= 7;
     };
 
@@ -36,7 +39,7 @@ function Bullet() {
             if (
                 this.y <= enemyList[i].y &&
                 this.x >= enemyList[i].x &&
-                this.x <= enemyList[i].x + 20
+                this.x <= enemyList[i].x + 40
             ) {
                 score++;
                 this.alive = false;
