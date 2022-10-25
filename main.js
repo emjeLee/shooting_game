@@ -2,7 +2,7 @@ const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
 
 const shiptSize = 58;
-const enemySize = 64;
+const enemySize = 48;
 canvas.width = 400;
 canvas.height = 700;
 
@@ -134,7 +134,7 @@ function render() {
 
 function main() {
     if (gameOver) {
-        return ctx.drawImage(gameOverImage, -100, 50);
+        return ctx.drawImage(gameOverImage, -25, 100, 450, 450);
     }
     moveShip(); // 좌표 업데이트 후
     shootBullet();
