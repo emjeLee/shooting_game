@@ -18,14 +18,29 @@ let bulletList = [];
 function Bullet() {
     this.x = 0;
     this.y = 0;
+    this.alive = true;
     this.init = () => {
-        this.x = shipX + 20;
+        this.x = shipX + 18;
         this.y = shipY;
 
         bulletList.push(this);
     };
+
     this.shoot = () => {
         this.y -= 7;
+    };
+
+    this.attack = () => {
+        for (let i = 0; i < enemyList.length; i++) {
+            if (
+                this.y <= enemyList[i].y &&
+                this.x >= enemyList[i].x &&
+                this.x <= enemyList[i].x + 20
+            ) {
+                this.alive = false;
+                enemyList.splice(i, 1);
+            }
+        }
     };
 }
 
@@ -89,7 +104,7 @@ function createEnemy() {
     setInterval(() => {
         let enemy = new Enemy();
         enemy.init();
-    }, 1500);
+    }, 1000);
 }
 
 function moveShip() {
@@ -109,7 +124,10 @@ function moveShip() {
 
 function shootBullet() {
     for (let i = 0; i < bulletList.length; i++) {
-        bulletList[i].shoot();
+        if (bulletList[i].alive) {
+            bulletList[i].shoot();
+            bulletList[i].attack();
+        }
     }
 }
 
@@ -124,7 +142,9 @@ function render() {
     ctx.drawImage(shipImage, shipX, shipY);
 
     for (let i = 0; i < bulletList.length; i++) {
-        ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
+        if (bulletList[i].alive) {
+            ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
+        }
     }
 
     for (let i = 0; i < enemyList.length; i++) {
