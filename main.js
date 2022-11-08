@@ -11,6 +11,7 @@ document.body.appendChild(canvas);
 let backgroundImage, shipImage, bulletImage, gameOverImage;
 let gameOver = false;
 let score = 0;
+let levelSpeed = 0;
 
 let shipX = canvas.width / 2 - 29;
 let shipY = canvas.height - shiptSize;
@@ -36,12 +37,9 @@ function Bullet() {
 
     this.attack = () => {
         for (let i = 0; i < enemyList.length; i++) {
-            if (
-                this.y <= enemyList[i].y &&
-                this.x >= enemyList[i].x &&
-                this.x <= enemyList[i].x + 40
-            ) {
+            if (this.y <= enemyList[i].y && this.x >= enemyList[i].x && this.x <= enemyList[i].x + 40) {
                 score++;
+                levelSpeed = parseInt(score / 5, 10);
                 this.alive = false;
                 enemyList.splice(i, 1);
             }
@@ -65,11 +63,10 @@ function Enemy() {
     };
 
     this.updateY = () => {
+        this.y += 2 + levelSpeed;
         if (this.y >= canvas.height - enemySize) {
             gameOver = true;
         }
-
-        this.y += 2;
     };
 }
 
